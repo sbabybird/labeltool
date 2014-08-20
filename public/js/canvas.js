@@ -17,7 +17,6 @@ function ImgLayer(render, url) {
   };
 
   this.draw = function() {
-    //render.ctx.drawImage(img, 0, 0, img.width, img.height, px+render.xoffset, py+render.yoffset, img.width, img.height);
     render.ctx.save();
     render.ctx.translate(render.xoffset, render.yoffset);
     render.ctx.drawImage(img, px, py);
@@ -107,16 +106,9 @@ function Canvas(id) {
     if (toolPool[curToolName]) toolPool[curToolName].onMouseMove(e);
   });
 
-  this.getCtx = function() {
-    return ctx;
-  };
-
   this.getRender = function() {
     return render;
   };
 
-  this.addLayer = function(layer) {
-    layers.push(layer);
-  };
 };
 

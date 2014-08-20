@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
   var c = new Canvas('canvas');
   c.setBgLayer(new BgLayer(c.getRender()));
   c.setImgLayer(new ImgLayer(c.getRender(), 'image/demo.jpg'));
