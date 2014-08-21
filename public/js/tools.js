@@ -34,7 +34,7 @@ function ToolRuler(canvas) {
     }
     else {
       ruler.setP1({x:e.clientX, y:e.clientY});
-      ruler.setP2({x:e.clientX, y:e.clientY+20});
+      ruler.setP2({x:e.clientX, y:e.clientY});
     }
     canvas.draw();
     ruler.draw(canvas.getRender());
@@ -43,9 +43,7 @@ function ToolRuler(canvas) {
 
 function ToolDrawRect(canvas) {
   var isPress = false;
-  var ox = 0;
-  var oy = 0;
-  var tmpRect;
+  var rect = new RectLabel();
 
   this.start = function() {
   };
@@ -54,22 +52,23 @@ function ToolDrawRect(canvas) {
   };
 
   this.onMouseDown = function(e) {
-    tmpRect = new RectLabel(e.clientX, e.clientY);
+    rect.setP1({x:e.clientX, y:e.clientY});
     isPress = true;
   };
 
   this.onMouseUp = function(e) {
     isPress = false;
-    tmpRect.endFeedback(canvas.getRender().xoffset, canvas.getRender().yoffset);
-    canvas.getLabelLayer().add(tmpRect);
+    var tmp = rect.clone();
+    tmp.endFeedback(canvas.getRender().xoffset, canvas.getRender().yoffset);
+    canvas.getLabelLayer().add(tmp);
     canvas.draw();
   };
 
   this.onMouseMove = function(e) {
     if (isPress) {
+      rect.setP2({x:e.clientX, y:e.clientY});
       canvas.draw();
-      tmpRect.newPoint(e.clientX, e.clientY);
-      tmpRect.draw(canvas.getRender());
+      rect.draw(canvas.getRender());
     }
   };
 

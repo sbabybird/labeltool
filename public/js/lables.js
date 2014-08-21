@@ -25,36 +25,29 @@ function RulerLabel() {
   };
 
   this.setP1 = function(p) {
-    p1 = p;
+    p1.x = p.x;
+    p1.y = p.y;
   };
 
   this.setP2 = function(p) {
-    p2 = p;
+    p2.x = p.x;
+    p2.y = p.y;
   };
 
   this.getP1 = function() {
-    return p1;
+    return {x:p1.x, y:p1.y};
   }
 
   this.getP2 = function() {
-    return p2;
+    return {x:p2.x, y:p2.y};
   };
 
-  this.draw = function(render) {
+  this.drawFeedback = function(render) {
     var ctx = render.ctx;
     ctx.save();
-    if (!isFeedback) {
-      ctx.translate(render.xoffset, render.yoffset);
-    }
     ctx.strokeStyle = '#ff0000';
-    ctx.strokeRect(p1.x-2, p1.y-2, 4, 4);
-    ctx.strokeRect(p2.x-2, p2.y-2, 4, 4);
-    ctx.beginPath();
-    ctx.setLineDash([0, 0]);
-    ctx.moveTo(p1.x, p1.y);
-    ctx.lineTo(p2.x, p2.y);
-    ctx.stroke();
     ctx.setLineDash([5]);
+    ctx.beginPath();
     if (isVertical) {
       ctx.moveTo(0, p1.y);
       ctx.lineTo(render.width, p1.y);
@@ -68,7 +61,50 @@ function RulerLabel() {
       ctx.lineTo(p2.x, render.height);
     }
     ctx.stroke();
-    ctx.setLineDash([0, 0]);
+    ctx.restore();
+  };
+
+  this.drawLine = function(render) {
+    var ctx = render.ctx;
+    ctx.save();
+    ctx.strokeStyle = '#ff0000';
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.stroke();
+    ctx.save();
+    ctx.translate(p1.x, p1.y);
+    if (isVertical) {
+      ctx.rotate(Math.PI);
+    }
+    else {
+      ctx.rotate(Math.PI/2);
+    }
+    ctx.beginPath();
+    ctx.moveTo(-4, 0);
+    ctx.lineTo(4, 0);
+    ctx.stroke();
+    ctx.restore();
+    ctx.save();
+    ctx.translate(p2.x, p2.y);
+    if (isVertical) {
+      ctx.rotate(Math.PI);
+    }
+    else {
+      ctx.rotate(Math.PI/2);
+    }
+    ctx.beginPath();
+    ctx.moveTo(-4, 0);
+    ctx.lineTo(4, 0);
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.restore();
+  };
+
+  this.drawText = function(render) {
+    var ctx = render.ctx;
+    ctx.save();
     var distance = isVertical ? Math.abs(p2.y-p1.y):Math.abs(p2.x-p1.x);
     var text = '' + distance;
     ctx.textAlign = 'center';
@@ -77,29 +113,7 @@ function RulerLabel() {
     ctx.strokeText(text, (p1.x+p2.x)/2, (p1.y+p2.y)/2);
     ctx.fillStyle = 'red';
     ctx.fillText(text, (p1.x+p2.x)/2, (p1.y+p2.y)/2);
-
     ctx.restore();
-  };
-};
-
-function RectLabel(x, y) {
-  var ox = x;
-  var oy = y;
-  var nx = x;
-  var ny = y;
-  var isFeedback = true;
-
-  this.endFeedback = function(x, y) {
-    isFeedback = false;
-    ox -= x;
-    oy -= y;
-    nx -= x;
-    ny -= y;
-  };
-
-  this.newPoint = function(x, y) {
-    nx = x;
-    ny = y;
   };
 
   this.draw = function(render) {
@@ -108,13 +122,51 @@ function RectLabel(x, y) {
     if (!isFeedback) {
       ctx.translate(render.xoffset, render.yoffset);
     }
-    ctx.beginPath();
-    ctx.moveTo(ox, oy);
-    ctx.lineTo(nx, oy);
-    ctx.lineTo(nx, ny);
-    ctx.lineTo(ox, ny);
-    ctx.lineTo(ox, oy);
-    ctx.stroke();
+    else {
+      this.drawFeedback(render);
+    }
+    this.drawLine(render);
+    this.drawText(render);
+    ctx.restore();
+  };
+};
+
+function RectLabel() {
+  var p1 = {x:0, y:0};
+  var p2 = {x:0, y:0};
+  var isFeedback = true;
+
+  this.clone = function() {
+    var r = new RectLabel();
+    r.setP1(p1);
+    r.setP2(p2);
+    return r;
+  };
+
+  this.endFeedback = function(x, y) {
+    isFeedback = false;
+    p1.x -= x;
+    p1.y -= y;
+    p2.x -= x;
+    p2.y -= y;
+  };
+
+  this.setP1 = function(p) {
+    p1 = p
+  };
+
+  this.setP2 = function(p) {
+    p2 = p;
+  };
+
+  this.draw = function(render) {
+    var ctx = render.ctx;
+    ctx.save();
+    if (!isFeedback) {
+      ctx.translate(render.xoffset, render.yoffset);
+    }
+    ctx.strokeStyle = '#ff0000';
+    ctx.strokeRect(p1.x, p1.y, p2.x-p1.x, p2.y-p1.y);
     ctx.restore();
   };
 };
