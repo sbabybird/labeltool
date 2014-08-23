@@ -251,11 +251,13 @@ function RectLabel() {
   };
 
   this.setP1 = function(p) {
-    p1 = p
+    p1.x = p.x;
+    p1.y = p.y;
   };
 
   this.setP2 = function(p) {
-    p2 = p;
+    p2.x = p.x;
+    p2.y = p.y;
   };
 
   this.draw = function(render) {
@@ -269,3 +271,4 @@ function RectLabel() {
     ctx.restore();
   };
 };
+
