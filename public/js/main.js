@@ -16,6 +16,7 @@ $(function() {
   c.setTool('drawRect', new ToolDrawRect(c));
   c.setTool('pan', new ToolPan(c));
   c.setTool('ruler', new ToolRuler(c));
+  c.setTool('color', new ToolColor(c));
 
   $(window).keydown(function(e) {
     switch(e.keyCode) {
@@ -25,7 +26,10 @@ $(function() {
                break;
       case 51: c.setCurTool('ruler');
                break;
-      case 52: saveImg(c);
+      case 52: c.setCurTool('color');
+               break;
+      case 53: saveImg(c);
+               break;
       default: break;
     }
   });

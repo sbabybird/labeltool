@@ -1,3 +1,102 @@
+function ColorLabel() {
+  var p1 = {x:0, y:0};
+  var p2 = {x:0, y:0};
+  var isFeedback = true;
+  var isLeft = true;
+  var colorText = '#ffffff';
+
+  this.clone = function() {
+    var c = new ColorLabel();
+    c.setP1(p1);
+    c.setP2(p2);
+    c.setLeft(isLeft);
+    c.setColorText(colorText);
+    return c;
+  };
+
+  this.endFeedback = function(x, y) {
+    isFeedback = false;
+    p1.x -= x;
+    p1.y -= y;
+    p2.x -= x;
+    p2.y -= y;
+  };
+
+  this.setLeft = function(b) {
+    isLeft = b;
+  };
+
+  this.setColorText = function(t) {
+    colorText = t;
+  };
+
+  this.setP1 = function(p) {
+    p1.x = p.x;
+    p1.y = p.y;
+  };
+
+  this.setP2 = function(p) {
+    p2.x = p.x;
+    p2.y = p.y;
+  };
+
+  this.drawPickPoint = function(render) {
+    var ctx = render.ctx;
+    ctx.save();
+    ctx.strokeStyle = '#ff0000';
+    ctx.strokeRect(p1.x-2, p1.y-2, 4, 4);
+    ctx.restore();
+  };
+
+  this.drawLine = function(render) {
+    var ctx = render.ctx;
+    ctx.save();
+    ctx.beginPath();
+    ctx.strokeStyle = '#ff0000';
+    ctx.moveTo(p1.x+3, p1.y-3);
+    ctx.lineTo(p1.x+9, p1.y-9);
+    ctx.lineTo(p1.x+25, p1.y-9);
+    ctx.stroke();
+    ctx.restore();
+  };
+
+  this.drawColor = function(render) {
+    var ctx = render.ctx;
+    ctx.save();
+    ctx.fillStyle = colorText;
+    ctx.beginPath();
+    ctx.rect(p1.x+25, p1.y-9-6, 11, 11);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  };
+
+  this.drawText = function(render) {
+    var ctx = render.ctx;
+    ctx.save();
+    ctx.textAlign = 'left';
+    ctx.textBaseline='middle';
+    ctx.strokeStyle = 'white';
+    ctx.strokeText(colorText, p1.x+25+15, p1.y-9-3);
+    ctx.fillStyle = 'red';
+    ctx.fillText(colorText, p1.x+25+15, p1.y-9-3);
+    ctx.restore();
+  };
+
+  this.draw = function(render) {
+    var ctx = render.ctx;
+    ctx.save();
+    if (!isFeedback) {
+      ctx.translate(render.xoffset, render.yoffset);
+    }
+    this.drawPickPoint(render);
+    this.drawLine(render);
+    this.drawColor(render);
+    this.drawText(render);
+    ctx.restore();
+  };
+};
+
 function RulerLabel() {
   var p1 = {x:0, y:0};
   var p2 = {x:0, y:0};

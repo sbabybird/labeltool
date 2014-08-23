@@ -1,3 +1,44 @@
+function ToolColor(canvas) {
+  var isPress = false;
+  var color = new ColorLabel();
+
+  this.start = function() {
+  };
+
+  this.end = function() {
+  };
+
+  this.onMouseDown = function(e) {
+    color.setP1({x:e.clientX, y:e.clientY});
+    isPress = true;
+  };
+
+  this.onMouseUp = function(e) {
+    isPress = false;
+    var tmp = color.clone();
+    tmp.endFeedback(canvas.getRender().xoffset, canvas.getRender().yoffset);
+    canvas.getLabelLayer().add(tmp);
+    canvas.draw();
+  };
+
+  this.onMouseMove = function(e) {
+    function componentToHex(c) {
+      var hex = c.toString(16);
+      return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    function rgbToHex(r, g, b) {
+      return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+    color.setP1({x:e.clientX, y:e.clientY});
+    canvas.draw();
+    var pixel = canvas.getRender().ctx.getImageData(e.clientX, e.clientY, 1, 1);
+    color.setColorText(rgbToHex(pixel.data[0], pixel.data[1], pixel.data[2]));
+    color.draw(canvas.getRender());
+  };
+
+};
+
 function ToolRuler(canvas) {
   var isPress = false;
   var ruler = new RulerLabel();
@@ -39,6 +80,7 @@ function ToolRuler(canvas) {
     canvas.draw();
     ruler.draw(canvas.getRender());
   };
+
 };
 
 function ToolDrawRect(canvas) {
@@ -77,6 +119,7 @@ function ToolDrawRect(canvas) {
 
   this.onKeyUp = function(e) {
   };
+
 };
 
 function ToolPan(canvas) {
@@ -117,5 +160,6 @@ function ToolPan(canvas) {
 
   this.onKeyUp = function(e) {
   };
+
 };
 
