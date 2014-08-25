@@ -106,12 +106,37 @@ function ToolDrawRect(canvas) {
     canvas.draw();
   };
 
+  this.getLabelText = function(p1, p2) {
+    var text = '';
+    var ow = canvas.getImgLayer().getWidth();
+    var oh = canvas.getImgLayer().getHeight();
+    var px = p1.x+Math.floor((ow-canvas.getRender().width)/2)-canvas.getRender().xoffset;
+    var py = p1.y+Math.floor((oh-canvas.getRender().height)/2)-canvas.getRender().yoffset;
+    if (p2.x && p1.y == p2.y) {
+      text = ''+px+','+py;
+    }
+    else {
+      text = ''+px+','+py+','+(p2.x-p1.x)+','+(p2.y-p1.y);
+    }
+    return text;
+  };
+
   this.onMouseMove = function(e) {
     if (isPress) {
-      rect.setP2({x:e.clientX, y:e.clientY});
-      canvas.draw();
-      rect.draw(canvas.getRender());
+      if (e.clientX>rect.getP1().x && e.clientY>rect.getP1().y) {
+        rect.setP2({x:e.clientX, y:e.clientY});
+      }
+      else {
+        rect.setP2(rect.getP1());
+      }
     }
+    else {
+      rect.setP1({x:e.clientX, y:e.clientY});
+      rect.setP2({x:e.clientX, y:e.clientY});
+    }
+    canvas.draw();
+    rect.setLabelText(this.getLabelText(rect.getP1(), rect.getP2()));
+    rect.draw(canvas.getRender());
   };
 
   this.onKeyDown = function(e) {

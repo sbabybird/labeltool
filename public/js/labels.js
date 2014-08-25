@@ -234,11 +234,13 @@ function RectLabel() {
   var p1 = {x:0, y:0};
   var p2 = {x:0, y:0};
   var isFeedback = true;
+  var labelText = '';
 
   this.clone = function() {
     var r = new RectLabel();
     r.setP1(p1);
     r.setP2(p2);
+    r.setLabelText(labelText);
     return r;
   };
 
@@ -248,6 +250,10 @@ function RectLabel() {
     p1.y -= y;
     p2.x -= x;
     p2.y -= y;
+  };
+
+  this.setLabelText = function(t) {
+    labelText = t;
   };
 
   this.setP1 = function(p) {
@@ -260,14 +266,57 @@ function RectLabel() {
     p2.y = p.y;
   };
 
+  this.getP1 = function() {
+    return {x:p1.x, y:p1.y};
+  };
+
+  this.getP2 = function() {
+    return {x:p2.x, y:p2.y};
+  };
+
+  this.drawCross = function(render) {
+    var ctx = render.ctx;
+    ctx.save();
+    ctx.strokeStyle = '#ff0000';
+    ctx.beginPath();
+    ctx.moveTo(p1.x-10, p1.y);
+    ctx.lineTo(p1.x+10, p1.y);
+    ctx.moveTo(p1.x, p1.y-10);
+    ctx.lineTo(p1.x, p1.y+10);
+    ctx.stroke();
+    ctx.restore();
+  };
+
+  this.drawRect = function(render) {
+    var ctx = render.ctx;
+    ctx.save();
+    ctx.strokeStyle = '#ff0000';
+    ctx.setLineDash([5]);
+    ctx.strokeRect(p1.x, p1.y, p2.x-p1.x, p2.y-p1.y);
+    ctx.restore();
+  };
+
+  this.drawText = function(render) {
+    var ctx = render.ctx;
+    ctx.save();
+    ctx.textAlign = 'left';
+    ctx.textBaseline='middle';
+    ctx.strokeStyle = 'white';
+    ctx.strokeText(labelText, p1.x+3, p1.y-9);
+    ctx.fillStyle = 'red';
+    ctx.fillText(labelText, p1.x+3, p1.y-9);
+    ctx.restore();
+  };
+
   this.draw = function(render) {
     var ctx = render.ctx;
     ctx.save();
     if (!isFeedback) {
       ctx.translate(render.xoffset, render.yoffset);
     }
-    ctx.strokeStyle = '#ff0000';
-    ctx.strokeRect(p1.x, p1.y, p2.x-p1.x, p2.y-p1.y);
+    this.drawCross(render);
+    this.drawRect(render);
+    this.drawText(render);
     ctx.restore();
   };
 };
