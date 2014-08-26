@@ -107,7 +107,7 @@ function ToolRuler(canvas) {
 
 };
 
-function ToolDrawRect(canvas) {
+function ToolCoord(canvas) {
   var isPress = false;
   var rect = new RectLabel();
 

@@ -4,3 +4,67 @@ body {
   overflow: hidden;
 }
 
+#toolbar {
+	background: #0f0f0f;
+	color: white;
+	font-family: serif;
+	font-size: 9px;
+	text-align: center;
+	padding: 10px;
+	border-radius: 10px;
+	position: absolute;
+	top: 30px;
+	left: 30px;
+	width: 32px;
+	height: 320px;
+	overflow: hidden;
+	opacity: 0.7;
+}
+
+#toollist li {
+  list-style-type: none;
+  text-align:center;
+  margin-left:-4.0em;
+  margin-top:-0.3em;
+  margin-bottom:0.9em;
+}
+
+.toolicon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  opacity: 0.9;
+}
+
+#toollist li :hover {
+  opacity: 0.5;
+}
+
+.openfile {
+  background: url('/image/toolbar.png') no-repeat -93px 0;
+}
+
+.pan {
+  background: url('/image/toolbar.png') no-repeat -248px 0;
+}
+
+.rulerlabel {
+  background: url('/image/toolbar.png') no-repeat -62px 0;
+}
+
+.colorlabel {
+  background: url('/image/toolbar.png') no-repeat -124px 0;
+}
+
+.coordlabel {
+  background: url('/image/toolbar.png') no-repeat -403px 0;
+}
+
+.textlabel {
+  background: url('/image/toolbar.png') no-repeat -434px 0;
+}
+
+.savefile {
+  background: url('/image/toolbar.png') no-repeat -279px 0;
+}
+

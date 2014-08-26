@@ -13,29 +13,45 @@ $(function() {
   c.setImgLayer(new ImgLayer(c.getRender(), 'image/demo.jpg'));
   c.setLabelLayer(new LabelLayer(c.getRender()));
 
-  c.setTool('drawRect', new ToolDrawRect(c));
+  c.setTool('coord', new ToolCoord(c));
   c.setTool('pan', new ToolPan(c));
   c.setTool('ruler', new ToolRuler(c));
   c.setTool('color', new ToolColor(c));
 
-  $(window).keydown(function(e) {
-    switch(e.keyCode) {
-      case 49: c.setCurTool('drawRect');
-               break;
-      case 50: c.setCurTool('pan');
-               break;
-      case 51: c.setCurTool('ruler');
-               break;
-      case 52: c.setCurTool('color');
-               break;
-      case 53: saveImg(c);
-               break;
-      default: break;
-    }
+  $('#toolbar .openfile').click(function() {
+    openImg();
+  });
+
+  $('#toolbar .pan').click(function() {
+    c.setCurTool('pan');
+  });
+
+  $('#toolbar .rulerlabel').click(function() {
+    c.setCurTool('ruler');
+  });
+
+  $('#toolbar .colorlabel').click(function() {
+    c.setCurTool('color');
+  });
+
+  $('#toolbar .coordlabel').click(function() {
+    c.setCurTool('coord');
+  });
+
+  $('#toolbar .textlabel').click(function() {
+    c.setCurTool('text');
+  });
+
+  $('#toolbar .savefile').click(function() {
+    saveImg(c);
   });
 
   c.draw();
 });
+
+function openImg() {
+  ;
+}
 
 function saveImg(src) {
   var url = src.toDataURL();
@@ -44,3 +60,4 @@ function saveImg(src) {
   e.initEvent('click', true, true);
   a.dispatchEvent(e);
 };
+
