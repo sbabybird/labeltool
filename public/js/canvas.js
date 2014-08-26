@@ -1,7 +1,15 @@
 function BgLayer(render) {
+  var info = 'Drag and drop files here';
   this.draw = function() {
+    render.ctx.save();
     render.ctx.fillStyle = '#efefef';
     render.ctx.fillRect(0, 0, render.width, render.height);
+    render.ctx.fillStyle = '#0f0f0f';
+    render.ctx.font = '30px Arial';
+    render.ctx.textAlign = 'center';
+    render.ctx.textBaseline = 'middle';
+    render.ctx.fillText(info, render.width/2, render.height/2);
+    render.ctx.restore();
   };
 };
 

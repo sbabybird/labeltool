@@ -108,6 +108,6 @@ function addDNDListeners(c) {
       c.setLabelLayer(new LabelLayer(c.getRender()));
     };
     reader.readAsDataURL(file);
-  });
+  }, false);
 }
 
