@@ -11,7 +11,7 @@ $(function() {
 
   c.setBgLayer(new BgLayer(c.getRender()));
   c.setImgLayer(new ImgLayer(c.getRender(), 'image/demo.jpg', function(){
-    c.draw()
+    c.draw();
   }));
   c.setLabelLayer(new LabelLayer(c.getRender()));
 
