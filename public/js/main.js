@@ -54,6 +54,7 @@ $(function() {
     reader.onload = function() {
       c.setBgLayer(new BgLayer(c.getRender()));
       c.setImgLayer(new ImgLayer(c.getRender(), reader.result, function() {
+        c.reset();
         c.draw();
       }));
       c.setLabelLayer(new LabelLayer(c.getRender()));
@@ -103,6 +104,7 @@ function addDNDListeners(c) {
     reader.onload = function() {
       c.setBgLayer(new BgLayer(c.getRender()));
       c.setImgLayer(new ImgLayer(c.getRender(), reader.result, function() {
+        c.reset();
         c.draw();
       }));
       c.setLabelLayer(new LabelLayer(c.getRender()));

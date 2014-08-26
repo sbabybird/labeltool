@@ -53,6 +53,10 @@ function LabelLayer(render) {
       labelObjects[i].draw(render);
     }
   };
+
+  this.clean = function() {
+    labelObjects.length = 0;
+  };
 };
 
 function Canvas(c) {
@@ -68,6 +72,12 @@ function Canvas(c) {
   render.height = canvas.height;
   render.xoffset = 0;
   render.yoffset = 0;
+
+  this.reset = function() {
+    render.xoffset = 0;
+    render.yoffset = 0;
+    labelLayer.clean();
+  };
 
   this.setTool = function(name, tool) {
     toolPool[name] = tool;
