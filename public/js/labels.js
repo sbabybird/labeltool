@@ -2,14 +2,14 @@ function ColorLabel() {
   var p1 = {x:0, y:0};
   var p2 = {x:0, y:0};
   var isFeedback = true;
-  var isLeft = true;
+  var quadrant = 1;
   var colorText = '#ffffff';
 
   this.clone = function() {
     var c = new ColorLabel();
     c.setP1(p1);
     c.setP2(p2);
-    c.setLeft(isLeft);
+    c.setQuadrant(quadrant);
     c.setColorText(colorText);
     return c;
   };
@@ -22,8 +22,8 @@ function ColorLabel() {
     p2.y -= y;
   };
 
-  this.setLeft = function(b) {
-    isLeft = b;
+  this.setQuadrant = function(q) {
+    quadrant = q;
   };
 
   this.setColorText = function(t) {
@@ -40,6 +40,42 @@ function ColorLabel() {
     p2.y = p.y;
   };
 
+  this.getP1 = function() {
+    return {x:p1.x, y:p1.y};
+  };
+
+  this.getP2 = function() {
+    return {x:p2.x, y:p2.y};
+  };
+
+  this.get3Point = function() {
+    var ps = {};
+    switch (quadrant) {
+      case 1:
+        ps.pa = {x:p1.x+3, y:p1.y-3};
+        ps.pb = {x:p1.x+9, y:p1.y-9};
+        ps.pc = {x:p1.x+25, y:p1.y-9};
+        break;
+      case 2:
+        ps.pa = {x:p1.x+3, y:p1.y+3};
+        ps.pb = {x:p1.x+9, y:p1.y+9};
+        ps.pc = {x:p1.x+25, y:p1.y+9};
+        break;
+      case 3:
+        ps.pa = {x:p1.x-3, y:p1.y+3};
+        ps.pb = {x:p1.x-9, y:p1.y+9};
+        ps.pc = {x:p1.x-25, y:p1.y+9};
+        break;
+      case 4:
+        ps.pa = {x:p1.x-3, y:p1.y-3};
+        ps.pb = {x:p1.x-9, y:p1.y-9};
+        ps.pc = {x:p1.x-25, y:p1.y-9};
+        break;
+      default:break;
+    }
+    return ps;
+  };
+
   this.drawPickPoint = function(render) {
     var ctx = render.ctx;
     ctx.save();
@@ -53,9 +89,10 @@ function ColorLabel() {
     ctx.save();
     ctx.beginPath();
     ctx.strokeStyle = '#ff0000';
-    ctx.moveTo(p1.x+3, p1.y-3);
-    ctx.lineTo(p1.x+9, p1.y-9);
-    ctx.lineTo(p1.x+25, p1.y-9);
+    var ps = this.get3Point();
+    ctx.moveTo(ps.pa.x, ps.pa.y);
+    ctx.lineTo(ps.pb.x, ps.pb.y);
+    ctx.lineTo(ps.pc.x, ps.pc.y);
     ctx.stroke();
     ctx.restore();
   };
@@ -65,7 +102,12 @@ function ColorLabel() {
     ctx.save();
     ctx.fillStyle = colorText;
     ctx.beginPath();
-    ctx.rect(p1.x+25, p1.y-9-6, 11, 11);
+    if (quadrant == 3 || quadrant == 4) {
+      ctx.rect(p2.x-6, p2.y-6, 11, 11);
+    }
+    else {
+      ctx.rect(p2.x, p2.y-6, 11, 11);
+    }
     ctx.fill();
     ctx.stroke();
     ctx.restore();
@@ -74,12 +116,22 @@ function ColorLabel() {
   this.drawText = function(render) {
     var ctx = render.ctx;
     ctx.save();
-    ctx.textAlign = 'left';
-    ctx.textBaseline='middle';
-    ctx.strokeStyle = 'white';
-    ctx.strokeText(colorText, p1.x+25+15, p1.y-9-3);
-    ctx.fillStyle = 'red';
-    ctx.fillText(colorText, p1.x+25+15, p1.y-9-3);
+    if (quadrant == 3 || quadrant ==4 ) {
+      ctx.textAlign = 'right';
+      ctx.textBaseline='middle';
+      ctx.strokeStyle = 'white';
+      ctx.strokeText(colorText, p2.x-10, p2.y-3);
+      ctx.fillStyle = 'red';
+      ctx.fillText(colorText, p2.x-10, p2.y-3);
+    }
+    else {
+      ctx.textAlign = 'left';
+      ctx.textBaseline='middle';
+      ctx.strokeStyle = 'white';
+      ctx.strokeText(colorText, p2.x+15, p2.y-3);
+      ctx.fillStyle = 'red';
+      ctx.fillText(colorText, p2.x+15, p2.y-3);
+    }
     ctx.restore();
   };
 

@@ -21,19 +21,43 @@ function ToolColor(canvas) {
     canvas.draw();
   };
 
-  this.onMouseMove = function(e) {
-    function componentToHex(c) {
-      var hex = c.toString(16);
-      return hex.length == 1 ? "0" + hex : hex;
-    }
+  this.componentToHex = function(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  };
 
-    function rgbToHex(r, g, b) {
-      return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-    }
+  this.rgbToHex = function(r, g, b) {
+    return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+  };
+
+  this.onMouseMove = function(e) {
     color.setP1({x:e.clientX, y:e.clientY});
+    var iw = canvas.getImgLayer().getWidth();
+    var ih = canvas.getImgLayer().getHeight();
+    var ps = canvas.client2img({x:e.clientX, y:e.clientY});
+    if (ps.x>=0 && ps.x<iw-90) {
+      if (ps.y>=90 && ps.y<ih) {
+        color.setQuadrant(1);
+        color.setP2({x:e.clientX+25, y:e.clientY-9});
+      }
+      else {
+        color.setQuadrant(2);
+        color.setP2({x:e.clientX+25, y:e.clientY+9});
+      }
+    }
+    else {
+      if (ps.y>=90 && ps.y<ih) {
+        color.setQuadrant(4);
+        color.setP2({x:e.clientX-25, y:e.clientY-9});
+      }
+      else {
+        color.setQuadrant(3);
+        color.setP2({x:e.clientX-25, y:e.clientY+9});
+      }
+    }
     canvas.draw();
     var pixel = canvas.getRender().ctx.getImageData(e.clientX, e.clientY, 1, 1);
-    color.setColorText(rgbToHex(pixel.data[0], pixel.data[1], pixel.data[2]));
+    color.setColorText(this.rgbToHex(pixel.data[0], pixel.data[1], pixel.data[2]));
     color.draw(canvas.getRender());
   };
 
@@ -108,15 +132,12 @@ function ToolDrawRect(canvas) {
 
   this.getLabelText = function(p1, p2) {
     var text = '';
-    var ow = canvas.getImgLayer().getWidth();
-    var oh = canvas.getImgLayer().getHeight();
-    var px = p1.x+Math.floor((ow-canvas.getRender().width)/2)-canvas.getRender().xoffset;
-    var py = p1.y+Math.floor((oh-canvas.getRender().height)/2)-canvas.getRender().yoffset;
-    if (p2.x && p1.y == p2.y) {
-      text = ''+px+','+py;
+    var ps = canvas.client2img(p1);
+    if (p1.x == p2.x && p1.y == p2.y) {
+      text = ''+ps.x+','+ps.y;
     }
     else {
-      text = ''+px+','+py+','+(p2.x-p1.x)+','+(p2.y-p1.y);
+      text = ''+ps.x+','+ps.y+','+(p2.x-p1.x)+','+(p2.y-p1.y);
     }
     return text;
   };

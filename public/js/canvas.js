@@ -145,5 +145,21 @@ function Canvas(c) {
     this.draw();
     return data;
   };
+
+  this.client2img = function(p) {
+    var ow = imgLayer.getWidth();
+    var oh = imgLayer.getHeight();
+    var px = p.x+Math.floor((ow-render.width)/2)-render.xoffset;
+    var py = p.y+Math.floor((oh-render.height)/2)-render.yoffset;
+    return {x:px, y:py};
+  };
+
+  this.img2client = function(p) {
+    var ow = imgLayer.getWidth();
+    var oh = imgLayer.getHeight();
+    var px = p.x-Math.floor((ow-render.width)/2)+render.xoffset;
+    var py = p.y-Math.floor((oh-render.height)/2)+render.yoffset;
+    return {x:px, y:py};
+  };
 };
 
