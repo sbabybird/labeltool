@@ -5,7 +5,7 @@ function BgLayer(render) {
   };
 };
 
-function ImgLayer(render, url) {
+function ImgLayer(render, url, imgLoaded) {
   var img = new Image();
   var px = 0;
   var py = 0;
@@ -14,6 +14,7 @@ function ImgLayer(render, url) {
     px = (render.width-img.width)/2;
     py = (render.height-img.height)/2;
     render.ctx.drawImage(img, px, py);
+    imgLoaded();
   };
 
   this.draw = function() {

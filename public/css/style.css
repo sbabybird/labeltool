@@ -4,6 +4,10 @@ body {
   overflow: hidden;
 }
 
+.hidden {
+  display: none;
+}
+
 #toolbar {
 	background: #0f0f0f;
 	color: white;
