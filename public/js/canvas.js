@@ -180,5 +180,21 @@ function Canvas(c) {
     var py = p.y-Math.floor((oh-render.height)/2)+render.yoffset;
     return {x:px, y:py};
   };
+
+  this.setCursor = function(name) {
+    c.style.cursor = name;
+  };
+
+  this.snapPoint = function(p) {
+    var ps = this.client2img(p);
+    var ow = imgLayer.getWidth();
+    var oh = imgLayer.getHeight();
+    if (ps.x >= 0 && ps.x < 10) ps.x = 0;
+    if (ps.y >= 0 && ps.y < 10) ps.y = 0;
+    if (ps.x <= ow && ps.x > ow-10) ps.x = ow;
+    if (ps.y <= oh && ps.y > oh-10) ps.y = oh;
+    p = this.img2client(ps);
+    return p;
+  };
 };
 

@@ -26,22 +26,27 @@ $(function() {
 
   $('#toolbar .pan').click(function() {
     c.setCurTool('pan');
+    c.setCursor('pointer');
   });
 
   $('#toolbar .rulerlabel').click(function() {
     c.setCurTool('ruler');
+    c.setCursor('none');
   });
 
   $('#toolbar .colorlabel').click(function() {
     c.setCurTool('color');
+    c.setCursor('none');
   });
 
   $('#toolbar .coordlabel').click(function() {
     c.setCurTool('coord');
+    c.setCursor('none');
   });
 
   $('#toolbar .textlabel').click(function() {
     c.setCurTool('text');
+    c.setCursor('text');
   });
 
   $('#toolbar .savefile').click(function() {

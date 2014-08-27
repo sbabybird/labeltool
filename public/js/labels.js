@@ -154,10 +154,12 @@ function RulerLabel() {
   var p2 = {x:0, y:0};
   var isFeedback = true;
   var isVertical = true;
+  var isPress = false;
 
   this.clone = function() {
     var r = new RulerLabel();
     r.setVertical(isVertical);
+    r.setPress(isPress);
     r.setP1(p1);
     r.setP2(p2);
     return r;
@@ -173,6 +175,10 @@ function RulerLabel() {
 
   this.setVertical = function(b) {
     isVertical = b;
+  };
+
+  this.setPress = function(b) {
+    isPress = b;
   };
 
   this.setP1 = function(p) {
@@ -211,6 +217,19 @@ function RulerLabel() {
       ctx.moveTo(p2.x, 0);
       ctx.lineTo(p2.x, render.height);
     }
+    ctx.stroke();
+    ctx.restore();
+  };
+
+  this.drawCross = function(render) {
+    var ctx = render.ctx;
+    ctx.save();
+    ctx.strokeStyle = '#ff0000';
+    ctx.beginPath();
+    ctx.moveTo(p1.x-10, p1.y);
+    ctx.lineTo(p1.x+10, p1.y);
+    ctx.moveTo(p1.x, p1.y-10);
+    ctx.lineTo(p1.x, p1.y+10);
     ctx.stroke();
     ctx.restore();
   };
@@ -257,7 +276,7 @@ function RulerLabel() {
     var ctx = render.ctx;
     ctx.save();
     var distance = isVertical ? Math.abs(p2.y-p1.y):Math.abs(p2.x-p1.x);
-    var text = '' + distance;
+    var text = '' + distance>0 ? distance:'';
     ctx.textAlign = 'center';
     ctx.textBaseline='middle';
     ctx.strokeStyle = 'white';
@@ -274,7 +293,12 @@ function RulerLabel() {
       ctx.translate(render.xoffset, render.yoffset);
     }
     else {
-      this.drawFeedback(render);
+      if (!isPress) {
+        this.drawCross(render);
+      }
+      else {
+        this.drawFeedback(render);
+      }
     }
     this.drawLine(render);
     this.drawText(render);

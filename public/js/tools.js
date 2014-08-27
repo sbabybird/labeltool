@@ -74,12 +74,15 @@ function ToolRuler(canvas) {
   };
 
   this.onMouseDown = function(e) {
-    ruler.setP1({x:e.clientX, y:e.clientY});
+    var p = canvas.snapPoint({x:e.clientX, y:e.clientY});
+    ruler.setP1({x:p.x, y:p.y});
     isPress = true;
+    ruler.setPress(true);
   };
 
   this.onMouseUp = function(e) {
     isPress = false;
+    ruler.setPress(false);
     tmp = ruler.clone();
     tmp.endFeedback(canvas.getRender().xoffset, canvas.getRender().yoffset);
     canvas.getLabelLayer().add(tmp);
@@ -87,19 +90,20 @@ function ToolRuler(canvas) {
   };
 
   this.onMouseMove = function(e) {
+    var p = canvas.snapPoint({x:e.clientX, y:e.clientY});
     if (isPress) {
-      var isVertical = (Math.abs(e.clientX-ruler.getP1().x) > Math.abs(e.clientY-ruler.getP1().y)) ? false:true; 
+      var isVertical = (Math.abs(p.x-ruler.getP1().x) > Math.abs(p.y-ruler.getP1().y)) ? false:true; 
       if (isVertical) {
-        ruler.setP2({x:ruler.getP1().x, y:e.clientY});
+        ruler.setP2({x:ruler.getP1().x, y:p.y});
       }
       else {
-        ruler.setP2({x:e.clientX, y:ruler.getP1().y});
+        ruler.setP2({x:p.x, y:ruler.getP1().y});
       }
       ruler.setVertical(isVertical);
     }
     else {
-      ruler.setP1({x:e.clientX, y:e.clientY});
-      ruler.setP2({x:e.clientX, y:e.clientY});
+      ruler.setP1({x:p.x, y:p.y});
+      ruler.setP2({x:p.x, y:p.y});
     }
     canvas.draw();
     ruler.draw(canvas.getRender());
@@ -118,7 +122,8 @@ function ToolCoord(canvas) {
   };
 
   this.onMouseDown = function(e) {
-    rect.setP1({x:e.clientX, y:e.clientY});
+    var p = canvas.snapPoint({x:e.clientX, y:e.clientY});
+    rect.setP1({x:p.x, y:p.y});
     isPress = true;
   };
 
@@ -143,17 +148,18 @@ function ToolCoord(canvas) {
   };
 
   this.onMouseMove = function(e) {
+    var p = canvas.snapPoint({x:e.clientX, y:e.clientY});
     if (isPress) {
-      if (e.clientX>rect.getP1().x && e.clientY>rect.getP1().y) {
-        rect.setP2({x:e.clientX, y:e.clientY});
+      if (p.x>rect.getP1().x && p.y>rect.getP1().y) {
+        rect.setP2({x:p.x, y:p.y});
       }
       else {
         rect.setP2(rect.getP1());
       }
     }
     else {
-      rect.setP1({x:e.clientX, y:e.clientY});
-      rect.setP2({x:e.clientX, y:e.clientY});
+      rect.setP1({x:p.x, y:p.y});
+      rect.setP2({x:p.x, y:p.y});
     }
     canvas.draw();
     rect.setLabelText(this.getLabelText(rect.getP1(), rect.getP2()));
