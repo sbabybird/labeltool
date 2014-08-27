@@ -80,7 +80,7 @@ function ColorLabel() {
     var ctx = render.ctx;
     ctx.save();
     ctx.strokeStyle = '#ff0000';
-    ctx.strokeRect(p1.x-2, p1.y-2, 4, 4);
+    ctx.strokeRect(p1.x-2+0.5, p1.y-2+0.5, 4, 4);
     ctx.restore();
   };
 
@@ -90,9 +90,9 @@ function ColorLabel() {
     ctx.beginPath();
     ctx.strokeStyle = '#ff0000';
     var ps = this.get3Point();
-    ctx.moveTo(ps.pa.x, ps.pa.y);
-    ctx.lineTo(ps.pb.x, ps.pb.y);
-    ctx.lineTo(ps.pc.x, ps.pc.y);
+    ctx.moveTo(ps.pa.x+0.5, ps.pa.y+0.5);
+    ctx.lineTo(ps.pb.x+0.5, ps.pb.y+0.5);
+    ctx.lineTo(ps.pc.x+0.5, ps.pc.y+0.5);
     ctx.stroke();
     ctx.restore();
   };
@@ -103,10 +103,10 @@ function ColorLabel() {
     ctx.fillStyle = colorText;
     ctx.beginPath();
     if (quadrant == 3 || quadrant == 4) {
-      ctx.rect(p2.x-6, p2.y-6, 11, 11);
+      ctx.rect(p2.x-6+0.5, p2.y-6+0.5, 11, 11);
     }
     else {
-      ctx.rect(p2.x, p2.y-6, 11, 11);
+      ctx.rect(p2.x+0.5, p2.y-6+0.5, 11, 11);
     }
     ctx.fill();
     ctx.stroke();
@@ -199,6 +199,10 @@ function RulerLabel() {
     return {x:p2.x, y:p2.y};
   };
 
+  this.getDistance = function() {
+    return isVertical ? Math.abs(p2.y-p1.y):Math.abs(p2.x-p1.x);
+  };
+
   this.drawFeedback = function(render) {
     var ctx = render.ctx;
     ctx.save();
@@ -206,16 +210,16 @@ function RulerLabel() {
     ctx.setLineDash([5]);
     ctx.beginPath();
     if (isVertical) {
-      ctx.moveTo(0, p1.y);
-      ctx.lineTo(render.width, p1.y);
-      ctx.moveTo(0, p2.y);
-      ctx.lineTo(render.width, p2.y);
+      ctx.moveTo(0+0.5, p1.y+0.5);
+      ctx.lineTo(render.width+0.5, p1.y+0.5);
+      ctx.moveTo(0+0.5, p2.y+0.5);
+      ctx.lineTo(render.width+0.5, p2.y+0.5);
     }
     else {
-      ctx.moveTo(p1.x, 0);
-      ctx.lineTo(p1.x, render.height);
-      ctx.moveTo(p2.x, 0);
-      ctx.lineTo(p2.x, render.height);
+      ctx.moveTo(p1.x+0.5, 0+0.5);
+      ctx.lineTo(p1.x+0.5, render.height+0.5);
+      ctx.moveTo(p2.x+0.5, 0+0.5);
+      ctx.lineTo(p2.x+0.5, render.height+0.5);
     }
     ctx.stroke();
     ctx.restore();
@@ -226,10 +230,10 @@ function RulerLabel() {
     ctx.save();
     ctx.strokeStyle = '#ff0000';
     ctx.beginPath();
-    ctx.moveTo(p1.x-10, p1.y);
-    ctx.lineTo(p1.x+10, p1.y);
-    ctx.moveTo(p1.x, p1.y-10);
-    ctx.lineTo(p1.x, p1.y+10);
+    ctx.moveTo(p1.x-10+0.5, p1.y+0.5);
+    ctx.lineTo(p1.x+10+0.5, p1.y+0.5);
+    ctx.moveTo(p1.x+0.5, p1.y-10+0.5);
+    ctx.lineTo(p1.x+0.5, p1.y+10+0.5);
     ctx.stroke();
     ctx.restore();
   };
@@ -239,43 +243,28 @@ function RulerLabel() {
     ctx.save();
     ctx.strokeStyle = '#ff0000';
     ctx.beginPath();
-    ctx.moveTo(p1.x, p1.y);
-    ctx.lineTo(p2.x, p2.y);
-    ctx.stroke();
-    ctx.save();
-    ctx.translate(p1.x, p1.y);
+    ctx.moveTo(p1.x+0.5, p1.y+0.5);
+    ctx.lineTo(p2.x+0.5, p2.y+0.5);
     if (isVertical) {
-      ctx.rotate(Math.PI);
+      ctx.moveTo(p1.x-4+0.5, p1.y+0.5);
+      ctx.lineTo(p1.x+4+0.5, p1.y+0.5);
+      ctx.moveTo(p2.x-4+0.5, p2.y+0.5);
+      ctx.lineTo(p2.x+4+0.5, p2.y+0.5);
     }
     else {
-      ctx.rotate(Math.PI/2);
+      ctx.moveTo(p1.x+0.5, p1.y+4+0.5);
+      ctx.lineTo(p1.x+0.5, p1.y-4+0.5);
+      ctx.moveTo(p2.x+0.5, p2.y+4+0.5);
+      ctx.lineTo(p2.x+0.5, p2.y-4+0.5);
     }
-    ctx.beginPath();
-    ctx.moveTo(-4, 0);
-    ctx.lineTo(4, 0);
     ctx.stroke();
-    ctx.restore();
-    ctx.save();
-    ctx.translate(p2.x, p2.y);
-    if (isVertical) {
-      ctx.rotate(Math.PI);
-    }
-    else {
-      ctx.rotate(Math.PI/2);
-    }
-    ctx.beginPath();
-    ctx.moveTo(-4, 0);
-    ctx.lineTo(4, 0);
-    ctx.stroke();
-    ctx.restore();
-
     ctx.restore();
   };
 
   this.drawText = function(render) {
     var ctx = render.ctx;
     ctx.save();
-    var distance = isVertical ? Math.abs(p2.y-p1.y):Math.abs(p2.x-p1.x);
+    var distance = this.getDistance();
     var text = '' + distance>0 ? distance:'';
     ctx.textAlign = 'center';
     ctx.textBaseline='middle';
@@ -306,14 +295,14 @@ function RulerLabel() {
   };
 };
 
-function RectLabel() {
+function CoordLabel() {
   var p1 = {x:0, y:0};
   var p2 = {x:0, y:0};
   var isFeedback = true;
   var labelText = '';
 
   this.clone = function() {
-    var r = new RectLabel();
+    var r = new CoordLabel();
     r.setP1(p1);
     r.setP2(p2);
     r.setLabelText(labelText);
@@ -355,10 +344,10 @@ function RectLabel() {
     ctx.save();
     ctx.strokeStyle = '#ff0000';
     ctx.beginPath();
-    ctx.moveTo(p1.x-10, p1.y);
-    ctx.lineTo(p1.x+10, p1.y);
-    ctx.moveTo(p1.x, p1.y-10);
-    ctx.lineTo(p1.x, p1.y+10);
+    ctx.moveTo(p1.x-10+0.5, p1.y+0.5);
+    ctx.lineTo(p1.x+10+0.5, p1.y+0.5);
+    ctx.moveTo(p1.x+0.5, p1.y-10+0.5);
+    ctx.lineTo(p1.x+0.5, p1.y+10+0.5);
     ctx.stroke();
     ctx.restore();
   };
@@ -368,7 +357,7 @@ function RectLabel() {
     ctx.save();
     ctx.strokeStyle = '#ff0000';
     ctx.setLineDash([5]);
-    ctx.strokeRect(p1.x, p1.y, p2.x-p1.x, p2.y-p1.y);
+    ctx.strokeRect(p1.x+0.5, p1.y+0.5, p2.x-p1.x, p2.y-p1.y);
     ctx.restore();
   };
 

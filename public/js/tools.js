@@ -83,10 +83,12 @@ function ToolRuler(canvas) {
   this.onMouseUp = function(e) {
     isPress = false;
     ruler.setPress(false);
-    tmp = ruler.clone();
-    tmp.endFeedback(canvas.getRender().xoffset, canvas.getRender().yoffset);
-    canvas.getLabelLayer().add(tmp);
-    canvas.draw();
+    if (ruler.getDistance()>0) {
+      tmp = ruler.clone();
+      tmp.endFeedback(canvas.getRender().xoffset, canvas.getRender().yoffset);
+      canvas.getLabelLayer().add(tmp);
+      canvas.draw();
+    }
   };
 
   this.onMouseMove = function(e) {
@@ -113,7 +115,7 @@ function ToolRuler(canvas) {
 
 function ToolCoord(canvas) {
   var isPress = false;
-  var rect = new RectLabel();
+  var rect = new CoordLabel();
 
   this.start = function() {
   };

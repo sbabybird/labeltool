@@ -2,8 +2,21 @@ function BgLayer(render) {
   var info = 'Drag and drop files here';
   this.draw = function() {
     render.ctx.save();
-    render.ctx.fillStyle = '#efefef';
+    render.ctx.fillStyle = '#eeeeee';
     render.ctx.fillRect(0, 0, render.width, render.height);
+    render.ctx.strokeStyle = '#dddddd';
+    for (var i = 0.5; i<render.width; i+=10) {
+      render.ctx.beginPath();
+      render.ctx.moveTo(i, 0.5);
+      render.ctx.lineTo(i, render.height);
+      render.ctx.stroke();
+    }
+    for (var j = 0.5; j<render.height; j+=10) {
+      render.ctx.beginPath();
+      render.ctx.moveTo(0.5, j);
+      render.ctx.lineTo(render.width, j);
+      render.ctx.stroke();
+    }
     render.ctx.fillStyle = '#0f0f0f';
     render.ctx.font = '30px Arial';
     render.ctx.textAlign = 'center';
