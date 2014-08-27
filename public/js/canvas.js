@@ -5,16 +5,16 @@ function BgLayer(render) {
     render.ctx.fillStyle = '#eeeeee';
     render.ctx.fillRect(0, 0, render.width, render.height);
     render.ctx.strokeStyle = '#dddddd';
-    for (var i = 0.5; i<render.width; i+=10) {
+    for (var i = 0; i<render.width; i+=10) {
       render.ctx.beginPath();
-      render.ctx.moveTo(i, 0.5);
-      render.ctx.lineTo(i, render.height);
+      render.ctx.moveTo(i+0.5, 0+0.5);
+      render.ctx.lineTo(i+0.5, render.height+0.5);
       render.ctx.stroke();
     }
-    for (var j = 0.5; j<render.height; j+=10) {
+    for (var j = 0; j<render.height; j+=10) {
       render.ctx.beginPath();
-      render.ctx.moveTo(0.5, j);
-      render.ctx.lineTo(render.width, j);
+      render.ctx.moveTo(0+0.5, j+0.5);
+      render.ctx.lineTo(render.width+0.5, j+0.5);
       render.ctx.stroke();
     }
     render.ctx.fillStyle = '#0f0f0f';
@@ -202,10 +202,10 @@ function Canvas(c) {
     var ps = this.client2img(p);
     var ow = imgLayer.getWidth();
     var oh = imgLayer.getHeight();
-    if (ps.x >= 0 && ps.x < 10) ps.x = 0;
-    if (ps.y >= 0 && ps.y < 10) ps.y = 0;
-    if (ps.x <= ow && ps.x > ow-10) ps.x = ow;
-    if (ps.y <= oh && ps.y > oh-10) ps.y = oh;
+    if ((ps.x>=0 && ps.x<10) || (ps.x<0 && ps.x>-10)) ps.x = 0;
+    if ((ps.y>=0 && ps.y<10) || (ps.y<0 && ps.y>-10)) ps.y = 0;
+    if ((ps.x<=ow && ps.x>ow-10) || (ps.x>ow && ps.x<ow+10)) ps.x = ow;
+    if ((ps.y<=oh && ps.y>oh-10) || (ps.y>oh && ps.y<oh+10)) ps.y = oh;
     p = this.img2client(ps);
     return p;
   };
