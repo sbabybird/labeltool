@@ -144,7 +144,7 @@ function ToolCoord(canvas) {
       text = ''+ps.x+','+ps.y;
     }
     else {
-      text = ''+ps.x+','+ps.y+','+(p2.x-p1.x)+','+(p2.y-p1.y);
+      text = ''+ps.x+','+ps.y+','+(p2.x-p1.x+1)+','+(p2.y-p1.y+1);
     }
     return text;
   };

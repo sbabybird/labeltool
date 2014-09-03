@@ -7,14 +7,14 @@ function BgLayer(render) {
     render.ctx.strokeStyle = '#dddddd';
     for (var i = 0; i<render.width; i+=10) {
       render.ctx.beginPath();
-      render.ctx.moveTo(i+0.5, 0+0.5);
-      render.ctx.lineTo(i+0.5, render.height+0.5);
+      render.ctx.moveTo(i, 0);
+      render.ctx.lineTo(i, render.height);
       render.ctx.stroke();
     }
     for (var j = 0; j<render.height; j+=10) {
       render.ctx.beginPath();
-      render.ctx.moveTo(0+0.5, j+0.5);
-      render.ctx.lineTo(render.width+0.5, j+0.5);
+      render.ctx.moveTo(0, j);
+      render.ctx.lineTo(render.width, j);
       render.ctx.stroke();
     }
     render.ctx.fillStyle = '#0f0f0f';
@@ -28,20 +28,18 @@ function BgLayer(render) {
 
 function ImgLayer(render, url, imgLoaded) {
   var img = new Image();
-  var px = 0;
-  var py = 0;
   img.src = url;
   img.onload = function() {
-    px = (render.width-img.width)/2;
-    py = (render.height-img.height)/2;
-    render.ctx.drawImage(img, px, py);
+    render.xoffset = Math.floor((render.width-img.width)/2);
+    render.yoffset = Math.floor((render.height-img.height)/2);
+    render.ctx.drawImage(img, 0, 0);
     imgLoaded();
   };
 
   this.draw = function() {
     render.ctx.save();
     render.ctx.translate(render.xoffset, render.yoffset);
-    render.ctx.drawImage(img, px, py);
+    render.ctx.drawImage(img, 0, 0);
     render.ctx.restore();
   };
 
@@ -86,9 +84,7 @@ function Canvas(c) {
   render.xoffset = 0;
   render.yoffset = 0;
 
-  this.reset = function() {
-    render.xoffset = 0;
-    render.yoffset = 0;
+  this.clean = function() {
     labelLayer.clean();
   };
 
@@ -127,9 +123,14 @@ function Canvas(c) {
   };
 
   this.draw = function() {
+    render.ctx.save();
+    render.ctx.translate(0.5, 0.5);
     if (bgLayer) bgLayer.draw();
+    render.ctx.translate(-0.5, -0.5);
     if (imgLayer) imgLayer.draw();
+    render.ctx.translate(0.5, 0.5);
     if (labelLayer) labelLayer.draw();
+    render.ctx.restore();
   };
 
   this.onMouseDown = function(e) {
@@ -157,17 +158,18 @@ function Canvas(c) {
   };
 
   this.toDataURL = function() {
-    // 由于初始化img图层时将其偏移了px和py
-    // 然后最后输出时，重置画布大小，并将偏移值取反，即可
-    // 输出图片之后，再恢复偏移
+    // 由于初始化时为了使图片剧中，整体将render进行偏移了x和y
+    // 然后最后输出时，重置画布大小，并将偏移值归零
+    // 为了输出整幅图片，所以等于重置了漫游工具的值
+    // 输出图片之后，再恢复现场
     var ow = canvas.width;
     var oh = canvas.height;
     var ox = render.xoffset;
     var oy = render.yoffset;
     render.width = canvas.width = imgLayer.getWidth();
     render.height = canvas.height = imgLayer.getHeight();
-    render.xoffset = (canvas.width - ow)/2;
-    render.yoffset = (canvas.height -oh)/2;
+    render.xoffset = 0;
+    render.yoffset = 0;
     this.draw();
     var data = canvas.toDataURL();
     render.width = canvas.width = ow;
@@ -179,19 +181,11 @@ function Canvas(c) {
   };
 
   this.client2img = function(p) {
-    var ow = imgLayer.getWidth();
-    var oh = imgLayer.getHeight();
-    var px = p.x+Math.floor((ow-render.width)/2)-render.xoffset;
-    var py = p.y+Math.floor((oh-render.height)/2)-render.yoffset;
-    return {x:px, y:py};
+    return {x:p.x-render.xoffset, y:p.y-render.yoffset};
   };
 
   this.img2client = function(p) {
-    var ow = imgLayer.getWidth();
-    var oh = imgLayer.getHeight();
-    var px = p.x-Math.floor((ow-render.width)/2)+render.xoffset;
-    var py = p.y-Math.floor((oh-render.height)/2)+render.yoffset;
-    return {x:px, y:py};
+    return {x:p.x+render.xoffset, y:p.y+render.yoffset};
   };
 
   this.setCursor = function(name) {
@@ -200,8 +194,8 @@ function Canvas(c) {
 
   this.snapPoint = function(p) {
     var ps = this.client2img(p);
-    var ow = imgLayer.getWidth();
-    var oh = imgLayer.getHeight();
+    var ow = imgLayer.getWidth()-1;
+    var oh = imgLayer.getHeight()-1;
     if ((ps.x>=0 && ps.x<10) || (ps.x<0 && ps.x>-10)) ps.x = 0;
     if ((ps.y>=0 && ps.y<10) || (ps.y<0 && ps.y>-10)) ps.y = 0;
     if ((ps.x<=ow && ps.x>ow-10) || (ps.x>ow && ps.x<ow+10)) ps.x = ow;

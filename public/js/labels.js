@@ -80,7 +80,7 @@ function ColorLabel() {
     var ctx = render.ctx;
     ctx.save();
     ctx.strokeStyle = '#ff0000';
-    ctx.strokeRect(p1.x-2+0.5, p1.y-2+0.5, 4, 4);
+    ctx.strokeRect(p1.x-2, p1.y-2, 4, 4);
     ctx.restore();
   };
 
@@ -90,9 +90,9 @@ function ColorLabel() {
     ctx.beginPath();
     ctx.strokeStyle = '#ff0000';
     var ps = this.get3Point();
-    ctx.moveTo(ps.pa.x+0.5, ps.pa.y+0.5);
-    ctx.lineTo(ps.pb.x+0.5, ps.pb.y+0.5);
-    ctx.lineTo(ps.pc.x+0.5, ps.pc.y+0.5);
+    ctx.moveTo(ps.pa.x, ps.pa.y);
+    ctx.lineTo(ps.pb.x, ps.pb.y);
+    ctx.lineTo(ps.pc.x, ps.pc.y);
     ctx.stroke();
     ctx.restore();
   };
@@ -103,10 +103,10 @@ function ColorLabel() {
     ctx.fillStyle = colorText;
     ctx.beginPath();
     if (quadrant == 3 || quadrant == 4) {
-      ctx.rect(p2.x-6+0.5, p2.y-6+0.5, 11, 11);
+      ctx.rect(p2.x-6, p2.y-6, 11, 11);
     }
     else {
-      ctx.rect(p2.x+0.5, p2.y-6+0.5, 11, 11);
+      ctx.rect(p2.x, p2.y-6, 11, 11);
     }
     ctx.fill();
     ctx.stroke();
@@ -140,6 +140,9 @@ function ColorLabel() {
     ctx.save();
     if (!isFeedback) {
       ctx.translate(render.xoffset, render.yoffset);
+    }
+    else {
+      ctx.translate(0.5, 0.5);
     }
     this.drawPickPoint(render);
     this.drawLine(render);
@@ -200,7 +203,7 @@ function RulerLabel() {
   };
 
   this.getDistance = function() {
-    return isVertical ? Math.abs(p2.y-p1.y):Math.abs(p2.x-p1.x);
+    return isVertical ? (Math.abs(p2.y-p1.y)+1):(Math.abs(p2.x-p1.x)+1);
   };
 
   this.drawFeedback = function(render) {
@@ -210,16 +213,16 @@ function RulerLabel() {
     ctx.setLineDash([5]);
     ctx.beginPath();
     if (isVertical) {
-      ctx.moveTo(0+0.5, p1.y+0.5);
-      ctx.lineTo(render.width+0.5, p1.y+0.5);
-      ctx.moveTo(0+0.5, p2.y+0.5);
-      ctx.lineTo(render.width+0.5, p2.y+0.5);
+      ctx.moveTo(0, p1.y);
+      ctx.lineTo(render.width, p1.y);
+      ctx.moveTo(0, p2.y);
+      ctx.lineTo(render.width, p2.y);
     }
     else {
-      ctx.moveTo(p1.x+0.5, 0+0.5);
-      ctx.lineTo(p1.x+0.5, render.height+0.5);
-      ctx.moveTo(p2.x+0.5, 0+0.5);
-      ctx.lineTo(p2.x+0.5, render.height+0.5);
+      ctx.moveTo(p1.x, 0);
+      ctx.lineTo(p1.x, render.height);
+      ctx.moveTo(p2.x, 0);
+      ctx.lineTo(p2.x, render.height);
     }
     ctx.stroke();
     ctx.restore();
@@ -230,10 +233,10 @@ function RulerLabel() {
     ctx.save();
     ctx.strokeStyle = '#ff0000';
     ctx.beginPath();
-    ctx.moveTo(p1.x-10+0.5, p1.y+0.5);
-    ctx.lineTo(p1.x+10+0.5, p1.y+0.5);
-    ctx.moveTo(p1.x+0.5, p1.y-10+0.5);
-    ctx.lineTo(p1.x+0.5, p1.y+10+0.5);
+    ctx.moveTo(p1.x-10, p1.y);
+    ctx.lineTo(p1.x+10, p1.y);
+    ctx.moveTo(p1.x, p1.y-10);
+    ctx.lineTo(p1.x, p1.y+10);
     ctx.stroke();
     ctx.restore();
   };
@@ -243,19 +246,19 @@ function RulerLabel() {
     ctx.save();
     ctx.strokeStyle = '#ff0000';
     ctx.beginPath();
-    ctx.moveTo(p1.x+0.5, p1.y+0.5);
-    ctx.lineTo(p2.x+0.5, p2.y+0.5);
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
     if (isVertical) {
-      ctx.moveTo(p1.x-4+0.5, p1.y+0.5);
-      ctx.lineTo(p1.x+4+0.5, p1.y+0.5);
-      ctx.moveTo(p2.x-4+0.5, p2.y+0.5);
-      ctx.lineTo(p2.x+4+0.5, p2.y+0.5);
+      ctx.moveTo(p1.x-4, p1.y);
+      ctx.lineTo(p1.x+4, p1.y);
+      ctx.moveTo(p2.x-4, p2.y);
+      ctx.lineTo(p2.x+4, p2.y);
     }
     else {
-      ctx.moveTo(p1.x+0.5, p1.y+4+0.5);
-      ctx.lineTo(p1.x+0.5, p1.y-4+0.5);
-      ctx.moveTo(p2.x+0.5, p2.y+4+0.5);
-      ctx.lineTo(p2.x+0.5, p2.y-4+0.5);
+      ctx.moveTo(p1.x, p1.y+4);
+      ctx.lineTo(p1.x, p1.y-4);
+      ctx.moveTo(p2.x, p2.y+4);
+      ctx.lineTo(p2.x, p2.y-4);
     }
     ctx.stroke();
     ctx.restore();
@@ -265,7 +268,7 @@ function RulerLabel() {
     var ctx = render.ctx;
     ctx.save();
     var distance = this.getDistance();
-    var text = '' + distance>0 ? distance:'';
+    var text = '' + distance>1 ? distance:'';
     ctx.textAlign = 'center';
     ctx.textBaseline='middle';
     ctx.strokeStyle = 'white';
@@ -282,6 +285,7 @@ function RulerLabel() {
       ctx.translate(render.xoffset, render.yoffset);
     }
     else {
+      ctx.translate(0.5, 0.5);
       if (!isPress) {
         this.drawCross(render);
       }
@@ -344,10 +348,10 @@ function CoordLabel() {
     ctx.save();
     ctx.strokeStyle = '#ff0000';
     ctx.beginPath();
-    ctx.moveTo(p1.x-10+0.5, p1.y+0.5);
-    ctx.lineTo(p1.x+10+0.5, p1.y+0.5);
-    ctx.moveTo(p1.x+0.5, p1.y-10+0.5);
-    ctx.lineTo(p1.x+0.5, p1.y+10+0.5);
+    ctx.moveTo(p1.x-10, p1.y);
+    ctx.lineTo(p1.x+10, p1.y);
+    ctx.moveTo(p1.x, p1.y-10);
+    ctx.lineTo(p1.x, p1.y+10);
     ctx.stroke();
     ctx.restore();
   };
@@ -357,7 +361,7 @@ function CoordLabel() {
     ctx.save();
     ctx.strokeStyle = '#ff0000';
     ctx.setLineDash([5]);
-    ctx.strokeRect(p1.x+0.5, p1.y+0.5, p2.x-p1.x, p2.y-p1.y);
+    ctx.strokeRect(p1.x, p1.y, p2.x-p1.x, p2.y-p1.y);
     ctx.restore();
   };
 
@@ -378,6 +382,9 @@ function CoordLabel() {
     ctx.save();
     if (!isFeedback) {
       ctx.translate(render.xoffset, render.yoffset);
+    }
+    else {
+      ctx.translate(0.5, 0.5);
     }
     this.drawCross(render);
     this.drawRect(render);
