@@ -124,6 +124,11 @@ function Canvas(c) {
 
   this.draw = function() {
     render.ctx.save();
+    /*
+    render.ctx.translate(render.wdith/2, render.height/2);
+    render.ctx.scale(2, 2);
+    render.ctx.translate((render.wdith/2)*-1, (render.height/2)*-1);
+    */
     render.ctx.translate(0.5, 0.5);
     if (bgLayer) bgLayer.draw();
     render.ctx.translate(-0.5, -0.5);

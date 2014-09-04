@@ -1,19 +1,17 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>labellabel</title>
 
-  <title>labellabel  </title>
+  <link rel='stylesheet' href='css/bootstrap.min.css' />
+  <link rel='stylesheet' href='css/font-awesome.min.css' />
   <link rel='stylesheet' href='css/style.css' />
 
   <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
   <script type="text/javascript" src="js/jquery-1.10.2.mousewheel.js"></script>
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
-
-  <script type="text/javascript" src="js/main.js"></script>
-  <script type="text/javascript" src="js/canvas.js"></script>
-  <script type="text/javascript" src="js/labels.js"></script>
-  <script type="text/javascript" src="js/tools.js"></script>
 </head>
 
 <body>
@@ -23,17 +21,21 @@
     </canvas>
   </div>
   <div id="toolbar">
-    <ul id = "toollist">
+    <ul id="toollist">
       <li><input class="hidden" type="file" name="file" id="selectfile"></input></li>
-      <li><a href="#" title="Open a image file"><i class="toolicon openfile"></i></a></li>
-      <li><a href="#" title="Move the image"><i class="toolicon pan"></i></a></li>
-      <li><a href="#" title="Draw ruler label"><i class="toolicon rulerlabel"></i></a></li>
-      <li><a href="#" title="Draw color label"><i class="toolicon colorlabel"></i></a></li>
-      <li><a href="#" title="Draw coord label"><i class="toolicon coordlabel"></i></a></li>
-      <li><a href="#" title="Draw text label"><i class="toolicon textlabel"></i></a></li>
-      <li><a href="#" title="Save image to file"><i class="toolicon savefile"></i></a></li>
+      <li id="openfile"><a href="#" title="Open a image file"><i class="fa fa-4x fa-file-o"></i></a></li>
+      <li id="pan"><a href="#" title="Move the image"><i class="fa fa-4x fa-arrows"></i></a></li>
+      <li id="rulerlabel"><a href="#" title="Draw ruler label"><i class="fa fa-4x fa-ellipsis-h"></i></a></li>
+      <li id="colorlabel"><a href="#" title="Draw color label"><i class="fa fa-4x fa-eyedropper"></i></a></li>
+      <li id="coordlabel"><a href="#" title="Draw coord label"><i class="fa fa-4x fa-crosshairs"></i></a></li>
+      <li id="textlabel"><a href="#" title="Draw text label"><i class="fa fa-4x fa-pencil-square-o"></i></a></li>
+      <li id="savefile"><a href="#" title="Save image to file"><i class="fa fa-4x fa-save"></i></a></li>
     </ul>
   </div>
+  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/canvas.js"></script>
+  <script type="text/javascript" src="js/labels.js"></script>
+  <script type="text/javascript" src="js/tools.js"></script>
 </body>
 
 </html>

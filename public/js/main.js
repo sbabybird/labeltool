@@ -20,36 +20,36 @@ $(function() {
   c.setTool('ruler', new ToolRuler(c));
   c.setTool('color', new ToolColor(c));
 
-  $('#toolbar .openfile').click(function() {
+  $('#openfile').click(function() {
     openImg(c);
   });
 
-  $('#toolbar .pan').click(function() {
+  $('#pan').click(function() {
     c.setCurTool('pan');
     c.setCursor('pointer');
   });
 
-  $('#toolbar .rulerlabel').click(function() {
+  $('#rulerlabel').click(function() {
     c.setCurTool('ruler');
     c.setCursor('none');
   });
 
-  $('#toolbar .colorlabel').click(function() {
+  $('#colorlabel').click(function() {
     c.setCurTool('color');
     c.setCursor('none');
   });
 
-  $('#toolbar .coordlabel').click(function() {
+  $('#coordlabel').click(function() {
     c.setCurTool('coord');
     c.setCursor('none');
   });
 
-  $('#toolbar .textlabel').click(function() {
+  $('#textlabel').click(function() {
     c.setCurTool('text');
     c.setCursor('text');
   });
 
-  $('#toolbar .savefile').click(function() {
+  $('#savefile').click(function() {
     saveImg(c);
   });
 
