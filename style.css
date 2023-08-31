@@ -13,39 +13,27 @@ body {
 }
 
 #toolbar {
+  display: flex;
+  flex-direction: column;
   background: #0f0f0f;
   font-size: 9px;
   padding: 10px;
   border-radius: 10px;
   position: fixed;
+  align-items: center;
+  padding: 20px 10px;
   top: 30px;
   left: 30px;
-  width: 46px;
-  height: 360px;
   overflow: hidden;
   opacity: 0.7;
 }
 
-#toollist a {
+#toolbar a {
   color: #fff;
-}
-
-#toollist li {
-  list-style-type: none;
-  text-align: center;
-  margin-left: -35px;
-  margin-top: -5px;
-  margin-bottom: 15px;
-  width: 30px;
-  height: 30px;
+  margin: 5px 0;
   opacity: 0.7;
 }
 
-#toollist li:hover {
+#toolbar a:hover {
   opacity: 1;
-}
-
-#toollist {
-  display: flex;
-  flex-direction: column;
 }
