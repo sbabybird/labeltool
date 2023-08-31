@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" />
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div id="container">
+    <canvas id="canvas">
+      Sorry your browser not support Canvas.
+    </canvas>
+  </div>
+  <div id="toolbar">
+    <ul id="toollist">
+      <li><input class="hidden" type="file" name="file" id="selectfile"></input></li>
+      <li id="openfile"><a href="#" title="Open a image file"><i class="fa fa-4x fa-file-o"></i></a></li>
+      <li id="pan"><a href="#" title="Move the image"><i class="fa fa-4x fa-arrows"></i></a></li>
+      <li id="rulerlabel"><a href="#" title="Draw ruler label"><i class="fa fa-4x fa-ellipsis-h"></i></a></li>
+      <li id="colorlabel"><a href="#" title="Draw color label"><i class="fa fa-4x fa-eyedropper"></i></a></li>
+      <li id="coordlabel"><a href="#" title="Draw coord label"><i class="fa fa-4x fa-crosshairs"></i></a></li>
+      <li id="textlabel"><a href="#" title="Draw text label"><i class="fa fa-4x fa-pencil-square-o"></i></a></li>
+      <li id="savefile"><a href="#" title="Save image to file"><i class="fa fa-4x fa-save"></i></a></li>
+    </ul>
+  </div>
+  <script type="module" src="/main.js"></script>
+</body>
+
+</html>

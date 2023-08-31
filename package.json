@@ -1,13 +1,14 @@
 {
-  "name": "application-name",
-  "version": "0.0.1",
+  "name": "labeltool",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "node app.js"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "dependencies": {
-    "express": "3.4.0",
-    "ejs": "*",
-    "serve-favicon": "*"
+  "devDependencies": {
+    "vite": "^4.4.5"
   }
 }
