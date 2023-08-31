@@ -90,11 +90,21 @@ function openImg(c) {
 }
 
 function saveImg(src) {
-  var url = src.toDataURL();
-  var a = $("<a href='" + url + "' target='_blank'>Save</a>").get(0);
-  var e = document.createEvent("MouseEvents");
-  e.initEvent("click", true, true);
-  a.dispatchEvent(e);
+  // 将 Canvas 图像转为 Data URL
+  const dataURL = src.toDataURL("image/png");
+
+  // 创建一个虚拟的链接元素
+  const link = document.createElement("a");
+  link.href = dataURL;
+  link.download = "label.png"; // 指定下载的文件名
+  link.style.display = "none";
+
+  // 添加到文档中并触发点击
+  document.body.appendChild(link);
+  link.click();
+
+  // 移除虚拟链接元素
+  document.body.removeChild(link);
 }
 
 function addDNDListeners(c) {
