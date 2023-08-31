@@ -83,6 +83,29 @@ export function Canvas(canvas) {
   render.height = canvas.height;
   render.xoffset = 0;
   render.yoffset = 0;
+  render.scale = 1.0;
+
+  canvas.addEventListener("wheel", (event) => {
+    event.preventDefault();
+
+    // 获取鼠标在 Canvas 上的坐标
+    const mouseX = event.clientX - canvas.getBoundingClientRect().left;
+    const mouseY = event.clientY - canvas.getBoundingClientRect().top;
+
+    // 根据滚轮方向调整缩放比例
+    if (event.deltaY < 0) {
+      render.scale *= 1.1; // 放大
+    } else {
+      render.scale *= 0.9; // 缩小
+    }
+
+    // 重新绘制内容
+    render.ctx.setTransform(1, 0, 0, 1, 0, 0); // 重置变换
+    render.ctx.translate(mouseX, mouseY); // 移动画布到鼠标位置
+    render.ctx.scale(render.scale, render.scale); // 缩放画布
+    render.ctx.translate(-mouseX, -mouseY); // 移动画布回原位
+    this.draw();
+  });
 
   this.clean = function() {
     labelLayer.clean();
@@ -124,11 +147,6 @@ export function Canvas(canvas) {
 
   this.draw = function() {
     render.ctx.save();
-    /*
-    render.ctx.translate(render.wdith/2, render.height/2);
-    render.ctx.scale(2, 2);
-    render.ctx.translate((render.wdith/2)*-1, (render.height/2)*-1);
-    */
     render.ctx.translate(0.5, 0.5);
     if (bgLayer) bgLayer.draw();
     render.ctx.translate(-0.5, -0.5);

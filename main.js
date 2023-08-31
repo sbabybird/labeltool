@@ -1,5 +1,4 @@
 import "./style.css";
-import { ColorLabel, CoordLabel, RulerLabel } from "./labels";
 import { ToolPan, ToolColor, ToolCoord, ToolRuler } from "./tools";
 import { BgLayer, ImgLayer, LabelLayer, Canvas } from "./canvas";
 
